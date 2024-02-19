@@ -1,0 +1,53 @@
+COMANDOS EXCEL
+
+- somase
+- se
+- cont.se
+- soma
+- serro
+- corresp
+
+COMANDOS SQL
+
+SELECT * FROM PC_TENTATIVAS_AQUISICAO
+LIMIT 5;
+
+SELECT DATE(DATA_HORA) AS Data, COUNT(*) AS Quantidade_Registros
+FROM PC_TENTATIVAS_REGISTROS
+GROUP BY Data;
+
+SELECT HOUR(DATA_HORA) AS hora_do_dia, COUNT(*) quantidade_registros
+FROM PC_TENTATIVAS_AQUISICAO
+WHERE DATE(DATA_HORA) = '2020-12-10'
+GROUP BY hora_do_dia;
+
+SELECT pca.nome_operador AS Operador, COUNT(*) Quantidade_Ligacoes_Atendidas
+FROM PC_TENTATIVAS_AQUISICAO AS pta
+JOIN PC_CONFIG_AGENTE AS pca ON pta.LOGIN_OPERADOR = pca.login_operador
+WHERE pta.DATA_HORA >= '2020-12-10 00:00:00' AND pta.DATA_HORA < '2020-12-11 00:00:00'
+AND pta.agentid IS NOT NULL
+GROUP BY pca.nome_operador;
+
+
+CREATE TEMPORARY TABLE Temp_RegistrosDezembro 
+SELECT * FROM PC_TENTATIVAS_AQUISICAO
+WHERE DATA_HORA BEETWEN '2020-12-01 00:00:00' AND '2021-01-01 00:00:00';
+
+
+SELECT t1.TELEFONE, t1.TABULACAO AS Ultima_Tabulacao
+FROM Temp_RegistrosDezembro2020 AS t1
+INNER JOIN 
+(SELECT TELEFONE, MAX(DATA_HORA) AS Ultima_Data_Hora)
+FROM Temp_RegistrosDezembro 2020
+GROUP BY TELEFONE) t2 ON t1.TELEFONE AND t1.DATA_HORA = t2.Ultima_Data_Hora;
+
+UPDATE Temp_RegistrosDezembros2020
+SET TABULACAO = 
+   CASE WHEN TABULACAO = 'NoDisposition' THEN 'Sem tabulacao'
+   ELSE 'TabulacaoDoDiscador'
+END;
+
+
+	
+
+
